@@ -14,6 +14,10 @@ function App() {
   const [scale, setScale] = useState(1.2);
   const [renderedPage, setRenderedPage] = useState(0);
   const [message, setMessage] = useState("");
+  const [query, setQuery] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+  const [searching, setSearching] = useState(false);
+  const searchRun = useRef(0);
   const canvas = useRef<HTMLCanvasElement>(null);
   const generation = useRef(0);
   useEffect(() => {
@@ -39,6 +43,7 @@ function App() {
   async function openFile(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]; event.target.value = ""; if (!file) return;
     const id = ++generation.current;
+    searchRun.current++; setSearching(false); setSearchMessage("");
     if (file.size === 0 || file.size > MAX_SIZE) { setMessage("Tệp rỗng hoặc vượt giới hạn 100 MB."); return; }
     try {
       setMessage("Đang mở tài liệu…");
@@ -49,9 +54,32 @@ function App() {
       setRenderedPage(0); setDoc(loaded); setName(file.name); setPage(1); setMessage("");
     } catch (error) { if (id === generation.current) setMessage(`Không thể mở PDF. Kiểm tra tệp hoặc mật khẩu. ${String(error)}`); }
   }
+  async function findText(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!doc || searching) return;
+    const needle = query.normalize("NFC").replace(/\s+/g, " ").trim().toLocaleLowerCase("vi");
+    if (!needle) { setSearchMessage("Nhập văn bản cần tìm."); return; }
+    const run = ++searchRun.current;
+    setSearching(true); setSearchMessage("Đang tìm trong tài liệu…");
+    try {
+      for (let index = 1; index <= doc.numPages; index++) {
+        const pdfPage = await doc.getPage(index);
+        const content = await pdfPage.getTextContent();
+        if (run !== searchRun.current) return;
+        const text = content.items.map(item => "str" in item ? item.str : "").join(" ")
+          .normalize("NFC").replace(/\s+/g, " ").toLocaleLowerCase("vi");
+        if (text.includes(needle)) {
+          setPage(index); setSearchMessage(`Tìm thấy tại trang ${index}`); return;
+        }
+      }
+      if (run === searchRun.current) setSearchMessage("Không tìm thấy văn bản trong tài liệu.");
+    } catch {
+      if (run === searchRun.current) setSearchMessage("Không thể tìm trong tài liệu. Hãy mở lại tệp.");
+    } finally { if (run === searchRun.current) setSearching(false); }
+  }
   return <main className="layout">
     <aside className="library"><div className="brand"><span className="mark">L</span><div><strong>Không gian tài liệu</strong><small>Local PDF Intelligence</small></div></div><div className="section"><span className="eyebrow">NGUỒN CỤC BỘ</span><label className="open">Chọn tệp PDF<input type="file" accept=".pdf,application/pdf" onChange={openFile}/></label><p>Tệp được mở từ máy này để xem trong phiên hiện tại.</p>{doc && <div className="file" title={name}><span>PDF</span><strong>{name}</strong><small>{doc.numPages} trang</small></div>}</div></aside>
-    <section className="reader"><header><div><span className="eyebrow">TRÌNH ĐỌC</span><h1>{name || "Chưa chọn tài liệu"}</h1></div><div className="controls"><button disabled={!doc || page <= 1} onClick={() => setPage(page - 1)} aria-label="Trang trước">←</button><span>{doc ? `${page} / ${doc.numPages}` : "— / —"}</span><button disabled={!doc || page >= doc.numPages} onClick={() => setPage(page + 1)} aria-label="Trang tiếp">→</button><i/><button disabled={!doc || scale <= 0.6} onClick={() => setScale(Math.max(0.6, scale - 0.2))} aria-label="Thu nhỏ">−</button><span>{Math.round(scale * 100)}%</span><button disabled={!doc || scale >= 2} onClick={() => setScale(Math.min(2, scale + 0.2))} aria-label="Phóng to">+</button></div></header>{message && <div className="notice" role="status">{message}</div>}<div className="viewport">{doc ? <canvas ref={canvas} data-rendered-page={renderedPage} aria-label={`Trang ${page} của ${name}`} style={{visibility: renderedPage === page ? "visible" : "hidden"}}/> : <div className="empty"><div className="paper">PDF</div><h2>Mở tài liệu để bắt đầu</h2><p>Chọn một tệp PDF từ máy để xem từng trang.</p></div>}</div></section>
+    <section className="reader"><header><div><span className="eyebrow">TRÌNH ĐỌC</span><h1>{name || "Chưa chọn tài liệu"}</h1></div><div className="controls"><button disabled={!doc || page <= 1} onClick={() => setPage(page - 1)} aria-label="Trang trước">←</button><span>{doc ? `${page} / ${doc.numPages}` : "— / —"}</span><button disabled={!doc || page >= doc.numPages} onClick={() => setPage(page + 1)} aria-label="Trang tiếp">→</button><i/><button disabled={!doc || scale <= 0.6} onClick={() => setScale(Math.max(0.6, scale - 0.2))} aria-label="Thu nhỏ">−</button><span>{Math.round(scale * 100)}%</span><button disabled={!doc || scale >= 2} onClick={() => setScale(Math.min(2, scale + 0.2))} aria-label="Phóng to">+</button></div></header><form className="search" onSubmit={findText}><label htmlFor="pdf-search">Tìm văn bản trong PDF</label><input id="pdf-search" value={query} onChange={event => setQuery(event.target.value)} disabled={!doc || searching} placeholder="Nhập từ hoặc cụm từ"/><button type="submit" disabled={!doc || searching}>{searching ? "Đang tìm…" : "Tìm"}</button><span role="status">{searchMessage}</span></form>{message && <div className="notice" role="status">{message}</div>}<div className="viewport">{doc ? <canvas ref={canvas} data-rendered-page={renderedPage} aria-label={`Trang ${page} của ${name}`} style={{visibility: renderedPage === page ? "visible" : "hidden"}}/> : <div className="empty"><div className="paper">PDF</div><h2>Mở tài liệu để bắt đầu</h2><p>Chọn một tệp PDF từ máy để xem từng trang.</p></div>}</div></section>
     <aside className="research"><span className="eyebrow">NGHIÊN CỨU</span><h2>Ghi chú từ nguồn</h2><div className="pending"><span className="dot"/> Chưa khả dụng</div><p>Hỏi đáp, ghi chú và trích dẫn đang được xây dựng. Hiện có thể mở và xem PDF.</p><div className="privacy"><strong>Dữ liệu trong máy</strong><p>Trình đọc không tự tải tài liệu lên dịch vụ bên ngoài.</p></div></aside>
   </main>;
 }

@@ -12,7 +12,7 @@ from reportlab.pdfgen import canvas
 
 root = Path(os.environ["LPI_DESKTOP_ROOT"])
 edge = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-output = Path(__file__).resolve().parents[1] / "docs" / "evidence" / "desktop-browser-smoke.png"
+output = Path(__file__).resolve().parents[1] / "docs" / "evidence" / "CTO-002-desktop-browser-smoke.png"
 with tempfile.TemporaryDirectory(dir=root) as temp:
     source = Path(temp) / "synthetic.pdf"
     pdf = canvas.Canvas(str(source))
@@ -40,13 +40,18 @@ with tempfile.TemporaryDirectory(dir=root) as temp:
             page.get_by_text("1 / 2", exact=True).wait_for(timeout=15000)
             page.wait_for_function("() => { const c=document.querySelector('canvas'); if (!c || c.width < 1) return false; const a=c.getContext('2d').getImageData(0,0,c.width,c.height).data; return a.some((v,i)=>i%4!==3 && v<100); }")
             first_page = page.locator("canvas").evaluate("c => c.toDataURL()")
-            page.get_by_role("button", name="Trang tiếp").click()
+            page.get_by_label("Tìm văn bản trong PDF").fill("page two")
+            page.get_by_role("button", name="Tìm", exact=True).click()
             page.get_by_text("2 / 2", exact=True).wait_for(timeout=10000)
             page.wait_for_function("first => { const c=document.querySelector('canvas'); return c?.dataset.renderedPage === '2' && c.toDataURL() !== first; }", arg=first_page, timeout=15000)
+            page.get_by_text("Tìm thấy tại trang 2", exact=True).wait_for(timeout=10000)
+            page.get_by_label("Tìm văn bản trong PDF").fill("không tồn tại")
+            page.get_by_role("button", name="Tìm", exact=True).click()
+            page.get_by_text("Không tìm thấy văn bản trong tài liệu.", exact=True).wait_for(timeout=10000)
             page.screenshot(path=str(output))
             browser.close()
         assert hashlib.sha256(source.read_bytes()).hexdigest() == before
-        print("PASS: browser viewer opened synthetic PDF, rendered page, navigated to page 2; SHA-256 unchanged")
+        print("PASS: browser viewer opened synthetic PDF, rendered page, found text on page 2, reported missing text; SHA-256 unchanged")
     finally:
         server.terminate()
         try: server.wait(timeout=5)
