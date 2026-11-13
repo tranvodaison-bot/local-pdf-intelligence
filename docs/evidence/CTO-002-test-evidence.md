@@ -11,3 +11,5 @@ Base master: `ce88e41fc24ddfa3f3259ed7b7f9fb4b9542ba6a`; work began from feature
 G1 **NOT_ACCEPTED**: native Tauri end-to-end, trusted file picker/backend integration, sidecar process management by desktop, persisted documents and source hash proof through the entire user workflow are not demonstrated. No installer or full license approval.
 
 Lần chạy trước có 1 test timeout do gửi yêu cầu trước khi sidecar sẵn sàng; kiểm thử đã được sửa để chờ health và toàn bộ test được chạy lại thành công.
+
+- GitHub Actions run `43393793402`, commit `e1f99af37bf40a67037e9257bd67d9ae0fedfc35`: **success** for Windows Python and frontend jobs; no native Tauri E2E.

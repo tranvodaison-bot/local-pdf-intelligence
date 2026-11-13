@@ -28,5 +28,5 @@
 | CTO-002-02 | Workspace API and persistence | P0 | IN_PROGRESS | Sidecar database configuration | Authenticated list/create and sidecar restart tests; document metadata and pagination missing |
 | CTO-002-03 | PDF viewer text search | P0 | IN_PROGRESS | Tauri picker/backend | Browser synthetic PDF search smoke passed; native E2E and backend integration missing |
 | CTO-002-04 | Backup/restore baseline | P1 | IN_PROGRESS | Backup manifests and source relinking | SQLite snapshot to new file and CLI tests pass; no encryption/manifest/source assets |
-| CTO-002-05 | CI and dependency inventory | P1 | IMPLEMENTED_UNVERIFIED | GitHub Actions run and review | Workflow prepared, not yet verified on GitHub; 526 provisional components, 420 unknown licenses |
+| CTO-002-05 | CI and dependency inventory | P1 | IN_PROGRESS | License/SBOM review | Windows CI passed for e1f99af; 526 provisional components, 420 unknown licenses |
 | CTO-002-G1 | Foundation acceptance | P0 | BLOCKED | 01–05 and native Windows E2E | NOT_ACCEPTED: picker, desktop integration, real-source E2E, evidence and security remain |

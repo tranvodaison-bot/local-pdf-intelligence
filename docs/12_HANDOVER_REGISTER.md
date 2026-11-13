@@ -46,5 +46,5 @@ Evidence must be updated with logs, commit IDs and screenshots. Never mark CLOSE
 
 - **IN_PROGRESS:** local sidecar protocol, authenticated workspace API and SQLite snapshot/restore to a new path. Tests include process restart and EOF shutdown; Tauri does not yet start or stop this sidecar.
 - **IN_PROGRESS:** viewer searches existing PDF text and navigates to first matching page in a browser smoke test; no native Tauri PDF interaction evidence.
-- **IMPLEMENTED_UNVERIFIED:** GitHub Actions workflow until remote run is inspected; dependency inventory is provisional and incomplete.
+- **IN_PROGRESS:** GitHub Actions Windows Python/frontend jobs passed for e1f99af; dependency inventory is provisional and incomplete, native E2E is not covered.
 - **G1 NOT_ACCEPTED:** trusted native picker, sidecar integration, persistent imported document workflow, Windows E2E, full license review and secure restore remain open. See `GAP_REGISTER.md` and CTO-002 evidence.

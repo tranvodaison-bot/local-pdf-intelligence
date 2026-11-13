@@ -26,5 +26,5 @@
 | G18 | P0 | Tauri does not start/manage the sidecar or receive one-time selected-file capabilities; no integrated document persistence. | Implement supervised packaged sidecar, protected IPC, selected-file grant and native restart E2E. |
 | G19 | P1 | SQLite snapshot excludes PDF sources, manifest, encryption and relink validation. | Design protected backup/restore and verify real recovery before release. |
 | G20 | P1 | Provisional dependency inventory omits Python transitive packages and has 420 license-unknown entries; no release SBOM. | Resolve licenses, installed runtime scope and transitive dependencies; security and legal review. |
-| G21 | P1 | CI workflow added but GitHub Actions outcome not yet verified; no native Windows E2E in CI. | Verify run and add appropriate native E2E and supply-chain checks. |
+| G21 | P1 | Windows Python and frontend CI passed for e1f99af; no native Windows E2E in CI. | Add native E2E and supply-chain checks before gate acceptance. |
 | G22 | P1 | Workspace list returns all entries and has no keyset pagination. | Add documented cursor pagination with API and tests before large-scale use. |
