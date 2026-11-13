@@ -13,4 +13,4 @@ python -m localpdf.cli --db "C:\absolute\workspace\library.sqlite" init-workspac
 python -m localpdf.cli --db "C:\absolute\workspace\library.sqlite" import --workspace demo --file "C:\absolute\source\document.pdf"
 ```
 
-The source is opened read-only, checked for header, size and parseability, hashed twice, then registered with status PENDING. Reimport in the same workspace returns `duplicate` without creating a second document. This is not a viewer, extraction, OCR, citation validation or trusted desktop selection. The path is accepted only from this explicitly invoked local CLI, not from the API. Do not point the database at the PDF source.
+The source is opened read-only, checked for header, size and parseability, rehashed and checked against the path identity before the database commit, then registered with status PENDING. Reimport in the same workspace returns `duplicate` without creating a second document. This is not a viewer, extraction, OCR, citation validation or trusted desktop selection. The path is accepted only from this explicitly invoked local CLI, not from the API. Do not point the database at the PDF source.

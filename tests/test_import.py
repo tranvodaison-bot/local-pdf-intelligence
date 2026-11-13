@@ -99,3 +99,43 @@ def test_local_cli_import_smoke(tmp_path):
     result = json.loads(added.stdout)
     assert result["status"] == "imported" and result["sha256"] == original
     assert hashlib.sha256(source.read_bytes()).hexdigest() == original
+
+
+def test_source_changed_during_registration_rolls_back(tmp_path, database):
+    source = tmp_path / "synthetic.pdf"
+    synthetic_pdf(source)
+    def mutate_fixture():
+        # Simulate an independent process changing this synthetic fixture.
+        with source.open("ab") as stream:
+            stream.write(b"changed externally")
+        return 0
+    database.create_function("mutate_fixture", 0, mutate_fixture)
+    database.execute("CREATE TRIGGER test_external_change BEFORE INSERT ON file_assets BEGIN SELECT mutate_fixture(); END")
+    database.commit()
+    with pytest.raises(ImportFailure, match="SOURCE_CHANGED"):
+        import_pdf(database, "w", source)
+    assert database.execute("SELECT count(*) FROM file_assets").fetchone()[0] == 0
+    assert database.execute("SELECT count(*) FROM documents").fetchone()[0] == 0
+    assert database.execute("SELECT count(*) FROM document_versions").fetchone()[0] == 0
+
+
+def test_source_path_replaced_before_commit_rolls_back(tmp_path, database, monkeypatch):
+    import os
+    import types
+    source = tmp_path / "synthetic.pdf"
+    synthetic_pdf(source)
+    real_stat = os.stat
+    def simulate_replacement():
+        def changed_stat(path, *args, **kwargs):
+            result = real_stat(path, *args, **kwargs)
+            if Path(path) == source:
+                return types.SimpleNamespace(st_dev=result.st_dev, st_ino=result.st_ino + 1, st_size=result.st_size)
+            return result
+        monkeypatch.setattr(os, "stat", changed_stat)
+        return 0
+    database.create_function("replace_fixture_path", 0, simulate_replacement)
+    database.execute("CREATE TRIGGER test_external_replacement BEFORE INSERT ON file_assets BEGIN SELECT replace_fixture_path(); END")
+    database.commit()
+    with pytest.raises(ImportFailure, match="SOURCE_CHANGED"):
+        import_pdf(database, "w", source)
+    assert database.execute("SELECT count(*) FROM documents").fetchone()[0] == 0

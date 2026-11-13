@@ -106,3 +106,16 @@ def test_live_loopback_server(monkeypatch):
         except subprocess.TimeoutExpired:
             process.kill()
             process.wait(timeout=5)
+
+
+def test_incomplete_migration_ledger_cannot_adopt_existing_database(tmp_path):
+    db = connect(tmp_path / "incomplete.sqlite")
+    db.execute("CREATE TABLE migration_checksums (version INTEGER PRIMARY KEY, sha256 TEXT NOT NULL)")
+    db.execute("CREATE TABLE user_data (value TEXT)")
+    db.execute("INSERT INTO user_data VALUES ('preserve')")
+    db.commit()
+    with pytest.raises(RuntimeError, match="adoption"):
+        migrate(db)
+    assert db.execute("SELECT value FROM user_data").fetchone() == ("preserve",)
+    assert db.execute("SELECT name FROM sqlite_master WHERE name='workspaces'").fetchone() is None
+    db.close()

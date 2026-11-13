@@ -19,6 +19,20 @@ def _hash_file(stream):
         digest.update(chunk)
     return digest.hexdigest()
 
+def _verify_source(stream, path, expected_hash, expected_size):
+    """Recheck both the open file and the selected pathname before persisting."""
+    try:
+        opened = os.fstat(stream.fileno())
+        current = os.stat(path, follow_symlinks=False)
+        if (opened.st_dev, opened.st_ino) != (current.st_dev, current.st_ino):
+            raise ImportFailure("SOURCE_CHANGED")
+        if opened.st_size != expected_size or current.st_size != expected_size:
+            raise ImportFailure("SOURCE_CHANGED")
+        if _hash_file(stream) != expected_hash:
+            raise ImportFailure("SOURCE_CHANGED")
+    except OSError as exc:
+        raise ImportFailure("SOURCE_CHANGED") from exc
+
 def import_pdf(db, workspace_id, selected_path, max_bytes=MAX_BYTES):
     """Register a locally selected original without modifying it; return duplicate explicitly."""
     path = Path(selected_path)
@@ -50,8 +64,7 @@ def import_pdf(db, workspace_id, selected_path, max_bytes=MAX_BYTES):
                 raise
             except Exception as exc:
                 raise ImportFailure("PDF_INVALID") from exc
-            if _hash_file(stream) != before or os.fstat(stream.fileno()).st_size != size:
-                raise ImportFailure("SOURCE_CHANGED")
+            _verify_source(stream, path, before, size)
             # Do not combine the source path provided by a browser with this function.
             if db.in_transaction:
                 raise ImportFailure("TRANSACTION_ACTIVE")
@@ -61,12 +74,14 @@ def import_pdf(db, workspace_id, selected_path, max_bytes=MAX_BYTES):
                     raise ImportFailure("WORKSPACE_NOT_FOUND")
                 duplicate = db.execute("SELECT d.id, dv.id FROM documents d JOIN document_versions dv ON dv.document_id=d.id JOIN file_assets fa ON fa.id=dv.file_asset_id WHERE d.workspace_id=? AND d.deleted_at IS NULL AND fa.sha256=? LIMIT 1", (workspace_id, before)).fetchone()
                 if duplicate:
+                    _verify_source(stream, path, before, size)
                     db.rollback()
                     return {"status": "duplicate", "document_id": duplicate[0], "version_id": duplicate[1], "sha256": before}
                 asset_id, doc_id, version_id = (str(uuid.uuid4()) for _ in range(3))
                 db.execute("INSERT INTO file_assets(id,sha256,original_path,byte_size) VALUES(?,?,?,?)", (asset_id, before, str(path), size))
                 db.execute("INSERT INTO documents(id,workspace_id,title) VALUES(?,?,?)", (doc_id, workspace_id, path.name))
                 db.execute("INSERT INTO document_versions(id,document_id,file_asset_id,version_no,status) VALUES(?,?,?,1,'PENDING')", (version_id, doc_id, asset_id))
+                _verify_source(stream, path, before, size)
                 db.commit()
                 return {"status": "imported", "document_id": doc_id, "version_id": version_id, "sha256": before, "pages": count}
             except BaseException:
