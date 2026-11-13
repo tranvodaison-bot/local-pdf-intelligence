@@ -119,3 +119,45 @@ def test_incomplete_migration_ledger_cannot_adopt_existing_database(tmp_path):
     assert db.execute("SELECT value FROM user_data").fetchone() == ("preserve",)
     assert db.execute("SELECT name FROM sqlite_master WHERE name='workspaces'").fetchone() is None
     db.close()
+
+
+def test_authentication_applies_to_all_api_routes(monkeypatch):
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    unauthenticated = client.get("/api/v1/unregistered")
+    assert unauthenticated.status_code == 401
+    authenticated = client.get("/api/v1/unregistered", headers={"Authorization": "Bearer " + "x" * 40})
+    assert authenticated.status_code == 404
+    assert authenticated.json()["code"] == "NOT_FOUND"
+
+
+def test_authenticated_workspace_persists_without_exposing_path(tmp_path, monkeypatch):
+    database = tmp_path / "dữ liệu.sqlite"
+    db = connect(database)
+    migrate(db)
+    db.close()
+    monkeypatch.setenv("LOCALPDF_DB_PATH", str(database))
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    headers = {"Authorization":"Bearer " + "x" * 40}
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    assert client.post("/api/v1/workspaces", json={"name":"Tài liệu"}).status_code == 401
+    created = client.post("/api/v1/workspaces", json={"name":"Tài liệu"}, headers=headers)
+    assert created.status_code == 201
+    assert client.get("/api/v1/health", headers=headers).json()["database"] == "ready"
+    assert created.json()["name"] == "Tài liệu"
+    assert str(database) not in created.text
+    restarted = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    result = restarted.get("/api/v1/workspaces", headers=headers)
+    assert result.status_code == 200 and result.json()[0]["id"] == created.json()["id"]
+    assert str(database) not in result.text
+
+def test_workspace_api_fails_without_configured_database(tmp_path, monkeypatch):
+    missing = tmp_path / "missing.sqlite"
+    monkeypatch.setenv("LOCALPDF_DB_PATH", str(missing))
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    response = client.get("/api/v1/workspaces", headers={"Authorization":"Bearer " + "x" * 40})
+    assert response.status_code == 503
+    assert response.json()["code"] == "DATABASE_UNAVAILABLE"
+    assert client.get("/api/v1/health", headers={"Authorization":"Bearer " + "x" * 40}).json()["database"] == "unavailable"
+    assert not missing.exists()

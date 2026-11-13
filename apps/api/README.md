@@ -14,3 +14,11 @@ python -m localpdf.cli --db "C:\absolute\workspace\library.sqlite" import --work
 ```
 
 The source is opened read-only, checked for header, size and parseability, rehashed and checked against the path identity before the database commit, then registered with status PENDING. Reimport in the same workspace returns `duplicate` without creating a second document. This is not a viewer, extraction, OCR, citation validation or trusted desktop selection. The path is accepted only from this explicitly invoked local CLI, not from the API. Do not point the database at the PDF source.
+
+## Local database snapshot
+
+`python -m localpdf.cli --db "C:\absolute\library.sqlite" backup --to "C:\absolute\new-backup.sqlite"`
+
+`python -m localpdf.cli --db "C:\absolute\new-restored.sqlite" restore --from "C:\absolute\backup.sqlite"`
+
+Both paths must be absolute and the destination must not exist. SQLite integrity is checked; source PDF files are references only and are not included. This initial utility does not supply encrypted backups, a manifest, source relinking or automated scheduling. Store snapshots in a protected location.
