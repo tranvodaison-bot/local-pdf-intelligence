@@ -1,3 +1,5 @@
+> **CTO-002 cập nhật:** Nhánh công việc có viewer PDF độc lập, tìm lớp chữ và tiện ích snapshot SQLite cục bộ. Đây chưa phải ứng dụng tích hợp: sidecar, chọn tệp tin cậy, quản lý tài liệu sau khởi động lại và Windows E2E còn thiếu. G1: **NOT_ACCEPTED**. Xem `TASK_REGISTER.md` và `docs/12_HANDOVER_REGISTER.md`.
+
 # LOCAL PDF INTELLIGENCE — CODEX HANDOFF v1.0
 **Ngày khóa đặc tả:** 2026-11-13 | **Trạng thái:** DESIGN BASELINE — NOT IMPLEMENTED/NOT VERIFIED
 
@@ -18,5 +20,11 @@ Windows desktop offline-first đọc PDF có OCR, hỏi đáp RAG, suy luận c�
 - `docs/11_EVALUATION_DATASET.md`: yêu cầu bộ golden set, không tạo dữ liệu chứng cứ giả.
 - `docs/12_HANDOVER_REGISTER.md`: trạng thái bằng chứng bàn giao.
 
-## Chưa có gì được xây dựng
-Không có app Windows, backend, AI model, OCR pipeline, hội thoại hay kiểm thử end-to-end được tạo ở đây. Repo là **bộ đặc tả để Codex thực hiện**. Nếu Codex muốn thay đổi hợp đồng API hay schema thì bắt buộc ADR + migration + test.
+## Trạng thái tại thời điểm bàn giao ban đầu
+Gói handoff ban đầu chưa có app Windows, backend, AI model, OCR pipeline, hội thoại hay kiểm thử end-to-end. Các cập nhật sau đó được ghi tại `docs/12_HANDOVER_REGISTER.md` và bảng task. Nếu Codex muốn thay đổi hợp đồng API hay schema thì bắt buộc ADR + migration + test.
+
+## Chạy kiểm thử phát triển
+
+Sau khi cấp phép và cài các dependency trong `requirements-dev.txt`, chạy `python -m pytest -q -p no:cacheprovider tests` tại thư mục gốc. Frontend có thể type-check/build bằng `npm ci` rồi `npm run build` trong `apps/desktop`. Các lệnh tải dependency cần được ghi nhật ký theo chính sách dự án.
+
+Viewer hiện độc lập với backend; chọn PDF chỉ mở trong phiên, không tạo bản ghi import. Tiện ích SQLite snapshot tại `apps/api/README.md` không sao lưu PDF nguồn. Đây chưa phải hướng dẫn cài đặt sản phẩm hoàn chỉnh.

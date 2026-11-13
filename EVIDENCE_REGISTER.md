@@ -13,3 +13,5 @@
 | 2026-11-13 | `docs/evidence/CTO-001-integrity-tests.txt`: 15 tests passed | Synthetic-source change/identity and incomplete-ledger regression; no G1 sign-off |
 | 2026-11-13 | `docs/evidence/CTO-001-desktop-tests.txt`; `desktop-browser-smoke.png` | Tauri executable build and process start; browser-only PDF smoke; no native E2E |
 | 2026-11-13 | Code commits `53666bf` and `7e8cb06` | Integrity fixes and standalone viewer prototype; integration and native E2E remain open |
+| 2026-11-13 | `docs/evidence/CTO-002-test-evidence.md` | CTO-002 local tests/build; G1 NOT_ACCEPTED |
+| 2026-11-13 | `docs/evidence/CTO-002-dependency-inventory.json` | Provisional CycloneDX inventory, incomplete licenses/transitives |

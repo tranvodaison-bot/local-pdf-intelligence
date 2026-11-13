@@ -41,3 +41,10 @@ Evidence must be updated with logs, commit IDs and screenshots. Never mark CLOSE
 - **IN_PROGRESS:** Tauri Windows executable built and process remained running for five seconds; React/PDF.js viewer opened and navigated a synthetic PDF in an Edge headless browser, hash unchanged. Screenshot is browser-only.
 - **NOT VERIFIED:** actual native window PDF interaction, secure integration with backend, capability handoff, source race, installation and full offline checks. G1 remains NO-GO.
 - Dependency installation was authorized and logged in `docs/evidence/DEPENDENCY_INSTALL_LOG.md`; transitive license/security approval remains pending.
+
+## CTO-002 — Foundation recovery
+
+- **IN_PROGRESS:** local sidecar protocol, authenticated workspace API and SQLite snapshot/restore to a new path. Tests include process restart and EOF shutdown; Tauri does not yet start or stop this sidecar.
+- **IN_PROGRESS:** viewer searches existing PDF text and navigates to first matching page in a browser smoke test; no native Tauri PDF interaction evidence.
+- **IMPLEMENTED_UNVERIFIED:** GitHub Actions workflow until remote run is inspected; dependency inventory is provisional and incomplete.
+- **G1 NOT_ACCEPTED:** trusted native picker, sidecar integration, persistent imported document workflow, Windows E2E, full license review and secure restore remain open. See `GAP_REGISTER.md` and CTO-002 evidence.

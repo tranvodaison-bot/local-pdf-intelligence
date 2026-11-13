@@ -22,3 +22,9 @@
 | G16 | P1 | Migration checksum ledger without baseline row must not authorize adoption of an existing database. | Fail closed and test added; full adoption/backfill and reverse migration remain open under G04. |
 
 | G17 | P0 | Desktop PDF viewer is independent of registered documents and backend; a browser smoke test does not establish native Tauri end-to-end correctness. | Connect trusted selected-file capability to backend, test source identity, native navigation and failure states. |
+
+| G18 | P0 | Tauri does not start/manage the sidecar or receive one-time selected-file capabilities; no integrated document persistence. | Implement supervised packaged sidecar, protected IPC, selected-file grant and native restart E2E. |
+| G19 | P1 | SQLite snapshot excludes PDF sources, manifest, encryption and relink validation. | Design protected backup/restore and verify real recovery before release. |
+| G20 | P1 | Provisional dependency inventory omits Python transitive packages and has 420 license-unknown entries; no release SBOM. | Resolve licenses, installed runtime scope and transitive dependencies; security and legal review. |
+| G21 | P1 | CI workflow added but GitHub Actions outcome not yet verified; no native Windows E2E in CI. | Verify run and add appropriate native E2E and supply-chain checks. |
+| G22 | P1 | Workspace list returns all entries and has no keyset pagination. | Add documented cursor pagination with API and tests before large-scale use. |
