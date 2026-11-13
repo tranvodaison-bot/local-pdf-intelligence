@@ -13,3 +13,11 @@ eval/private_cases.jsonl
 *.pdf
 *.env
 !examples/README.md
+
+# Local build and sensitive runtime data
+target/
+.npm-cache/
+*.db
+*.db-wal
+*.db-shm
+.env.*

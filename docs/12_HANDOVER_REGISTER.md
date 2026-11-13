@@ -22,3 +22,22 @@ Evidence must be updated with logs, commit IDs and screenshots. Never mark CLOSE
 - **IN_PROGRESS:** authenticated health route in `apps/api/localpdf/main.py`; exercised with TestClient only. Trusted Tauri token handoff, Origin verification, lifecycle and live loopback testing remain outstanding.
 - **BLOCKED / NOT STARTED:** desktop, PDF import/viewer, OCR, RAG, citation resolver, backup/restore and packaging. Rust/Cargo was not found in PATH. No demo screenshot or application E2E evidence exists.
 - **NOT SIGNED OFF:** unresolved P0/P1 issues are recorded in `GAP_REGISTER.md`; no release or product completion is claimed.
+
+## CTO-001 foundation update
+
+- **IN_PROGRESS:** local-only PDF registration prototype; validates a synthetic PDF, compares source hashes and registers PENDING metadata. See `docs/evidence/CTO-001-tests.txt`; no desktop picker capability or viewer.
+- **IN_PROGRESS:** API rejects non-loopback peers and browser origins in TestClient; authenticated health and missing-token rejection verified on a live loopback socket. Tauri handshake remains unverified.
+- **BLOCKED:** Tauri/React/PDF.js viewer and Windows end-to-end evidence; Rust/Cargo not found on PATH and frontend dependencies not provisioned.
+- **NOT STARTED:** OCR, AI/RAG and citation validator under G1 gate. No release sign-off.
+
+## CTO-001 integrity follow-up
+
+- **IN_PROGRESS:** import checks open-file hash, size and path identity again before committing; regression tests exercise synthetic content change and simulated identity change. This does not close the local filesystem race window or establish a trusted desktop capability.
+- **IN_PROGRESS:** migration runner rejects an existing incomplete checksum ledger; existing database adoption, backfill and reverse migration remain outstanding.
+- **Evidence:** `docs/evidence/CTO-001-integrity-tests.txt`: 15 tests passed; G1 remains unmet.
+
+## CTO-001 desktop prototype
+
+- **IN_PROGRESS:** Tauri Windows executable built and process remained running for five seconds; React/PDF.js viewer opened and navigated a synthetic PDF in an Edge headless browser, hash unchanged. Screenshot is browser-only.
+- **NOT VERIFIED:** actual native window PDF interaction, secure integration with backend, capability handoff, source race, installation and full offline checks. G1 remains NO-GO.
+- Dependency installation was authorized and logged in `docs/evidence/DEPENDENCY_INSTALL_LOG.md`; transitive license/security approval remains pending.

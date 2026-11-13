@@ -21,6 +21,7 @@ def migrate(db, sql_path=MIGRATION):
             if row[0] != digest:
                 raise RuntimeError("Applied migration checksum differs")
             return False
+        raise RuntimeError("Existing database requires reviewed adoption; incomplete migration ledger")
     elif db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' LIMIT 1").fetchone():
         raise RuntimeError("Existing database requires reviewed adoption; refusing migration")
     if db.in_transaction:
