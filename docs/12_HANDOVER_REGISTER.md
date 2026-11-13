@@ -22,3 +22,10 @@ Evidence must be updated with logs, commit IDs and screenshots. Never mark CLOSE
 - **IN_PROGRESS:** authenticated health route in `apps/api/localpdf/main.py`; exercised with TestClient only. Trusted Tauri token handoff, Origin verification, lifecycle and live loopback testing remain outstanding.
 - **BLOCKED / NOT STARTED:** desktop, PDF import/viewer, OCR, RAG, citation resolver, backup/restore and packaging. Rust/Cargo was not found in PATH. No demo screenshot or application E2E evidence exists.
 - **NOT SIGNED OFF:** unresolved P0/P1 issues are recorded in `GAP_REGISTER.md`; no release or product completion is claimed.
+
+## CTO-001 foundation update
+
+- **IN_PROGRESS:** local-only PDF registration prototype; validates a synthetic PDF, compares source hashes and registers PENDING metadata. See `docs/evidence/CTO-001-tests.txt`; no desktop picker capability or viewer.
+- **IN_PROGRESS:** API rejects non-loopback peers and browser origins in TestClient; authenticated health and missing-token rejection verified on a live loopback socket. Tauri handshake remains unverified.
+- **BLOCKED:** Tauri/React/PDF.js viewer and Windows end-to-end evidence; Rust/Cargo not found on PATH and frontend dependencies not provisioned.
+- **NOT STARTED:** OCR, AI/RAG and citation validator under G1 gate. No release sign-off.
