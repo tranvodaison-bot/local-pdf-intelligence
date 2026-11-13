@@ -1,0 +1,19 @@
+157 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.2
+157 INFO: Python: 3.14.2
+181 INFO: Platform: Windows-10-10.0.19045-SP0
+181 INFO: Python environment: C:\Users\Windows\AppData\Local\Programs\Python\Python314
+182 INFO: wrote ..\localpdf-sidecar.spec
+601 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\python314.zip',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\DLLs',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source\\scripts',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source']
+1053 INFO: Appending 'datas' from .spec
+ERROR: Unable to find 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\db\\001_initial.sql' when adding binary and data files.

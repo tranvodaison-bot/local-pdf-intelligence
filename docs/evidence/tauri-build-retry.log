@@ -1,0 +1,36 @@
+
+> local-pdf-desktop@0.0.1 tauri
+> tauri build --no-bundle
+
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `npm run build`
+
+> local-pdf-desktop@0.0.1 build
+> tsc --noEmit && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 28 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.37 kB │ gzip:   0.27 kB
+dist/assets/pdf.worker.min-LyOxJPrg.mjs  1,072.84 kB
+dist/assets/index-DpzbaYbe.css               3.19 kB │ gzip:   1.20 kB
+dist/assets/index-rRcy7Uw_.js              554.37 kB │ gzip: 166.93 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.19s
+   Compiling webview2-com-sys v0.39.1
+   Compiling tao v0.37.2
+   Compiling local-pdf-desktop v0.0.1 (C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\desktop-build\src-tauri)
+warning: local-pdf-desktop@0.0.1: STATIC_VCRUNTIME is deprecated; use build.windows.staticVCRuntime in tauri.conf.json or tauri_build::WindowsAttributes::static_vc_runtime instead.
+   Compiling webview2-com v0.39.1
+   Compiling tauri-runtime v2.12.2
+   Compiling wry v0.57.2
+   Compiling tauri-runtime-wry v2.12.3
+   Compiling tauri v2.12.5
+    Finished `release` profile [optimized] target(s) in 27.10s
+       Built application at: C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\desktop-build\src-tauri\target\release\local-pdf-desktop.exe

@@ -47,7 +47,7 @@ def test_checksum_and_existing_db_rejected(tmp_path):
     other.close()
 
 def test_authentication_fail_closed(monkeypatch):
-    client = TestClient(app)
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
     monkeypatch.delenv("LOCALPDF_SESSION_TOKEN", raising=False)
     assert client.get("/api/v1/health").status_code == 401
     monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
@@ -57,3 +57,107 @@ def test_authentication_fail_closed(monkeypatch):
     assert response.status_code == 200
     assert response.json()["model"] == "not_configured"
     assert client.get("/docs").status_code == 404
+
+
+def test_api_rejects_remote_and_browser_origin(monkeypatch):
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    headers = {"Authorization": "Bearer " + "x" * 40}
+    local = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    denied = local.get("/api/v1/health", headers={**headers, "Origin":"https://example.com"})
+    assert denied.status_code == 403 and denied.json()["code"] == "ORIGIN_FORBIDDEN"
+    assert denied.json()["request_id"]
+    remote = TestClient(app, client=("192.0.2.1", 12345))
+    assert remote.get("/api/v1/health", headers=headers).json()["code"] == "LOCAL_ONLY"
+
+
+def test_live_loopback_server(monkeypatch):
+    import os
+    import socket
+    import subprocess
+    import time
+    import urllib.error
+    import urllib.request
+    api = Path(__file__).resolve().parents[1] / "apps" / "api"
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    env = dict(os.environ, LOCALPDF_SESSION_TOKEN="t" * 40, PYTHONDONTWRITEBYTECODE="1")
+    process = subprocess.Popen([sys.executable, "-m", "uvicorn", "localpdf.main:app", "--host", "127.0.0.1", "--port", str(port), "--log-level", "error"], cwd=api, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        url = f"http://127.0.0.1:{port}/api/v1/health"
+        for _ in range(100):
+            if process.poll() is not None:
+                pytest.fail("Uvicorn exited before becoming ready")
+            try:
+                with urllib.request.urlopen(urllib.request.Request(url, headers={"Authorization":"Bearer " + "t" * 40}), timeout=1) as response:
+                    assert response.status == 200
+                    break
+            except urllib.error.URLError:
+                time.sleep(0.05)
+        else:
+            pytest.fail("Uvicorn did not start")
+        with pytest.raises(urllib.error.HTTPError) as exc:
+            urllib.request.urlopen(url, timeout=1)
+        assert exc.value.code == 401
+    finally:
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=5)
+
+
+def test_incomplete_migration_ledger_cannot_adopt_existing_database(tmp_path):
+    db = connect(tmp_path / "incomplete.sqlite")
+    db.execute("CREATE TABLE migration_checksums (version INTEGER PRIMARY KEY, sha256 TEXT NOT NULL)")
+    db.execute("CREATE TABLE user_data (value TEXT)")
+    db.execute("INSERT INTO user_data VALUES ('preserve')")
+    db.commit()
+    with pytest.raises(RuntimeError, match="adoption"):
+        migrate(db)
+    assert db.execute("SELECT value FROM user_data").fetchone() == ("preserve",)
+    assert db.execute("SELECT name FROM sqlite_master WHERE name='workspaces'").fetchone() is None
+    db.close()
+
+
+def test_authentication_applies_to_all_api_routes(monkeypatch):
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    unauthenticated = client.get("/api/v1/unregistered")
+    assert unauthenticated.status_code == 401
+    authenticated = client.get("/api/v1/unregistered", headers={"Authorization": "Bearer " + "x" * 40})
+    assert authenticated.status_code == 404
+    assert authenticated.json()["code"] == "NOT_FOUND"
+
+
+def test_authenticated_workspace_persists_without_exposing_path(tmp_path, monkeypatch):
+    database = tmp_path / "dữ liệu.sqlite"
+    db = connect(database)
+    migrate(db)
+    db.close()
+    monkeypatch.setenv("LOCALPDF_DB_PATH", str(database))
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    headers = {"Authorization":"Bearer " + "x" * 40}
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    assert client.post("/api/v1/workspaces", json={"name":"Tài liệu"}).status_code == 401
+    created = client.post("/api/v1/workspaces", json={"name":"Tài liệu"}, headers=headers)
+    assert created.status_code == 201
+    assert client.get("/api/v1/health", headers=headers).json()["database"] == "ready"
+    assert created.json()["name"] == "Tài liệu"
+    assert str(database) not in created.text
+    restarted = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    result = restarted.get("/api/v1/workspaces", headers=headers)
+    assert result.status_code == 200 and result.json()[0]["id"] == created.json()["id"]
+    assert str(database) not in result.text
+
+def test_workspace_api_fails_without_configured_database(tmp_path, monkeypatch):
+    missing = tmp_path / "missing.sqlite"
+    monkeypatch.setenv("LOCALPDF_DB_PATH", str(missing))
+    monkeypatch.setenv("LOCALPDF_SESSION_TOKEN", "x" * 40)
+    client = TestClient(app, base_url="http://127.0.0.1", client=("127.0.0.1", 12345))
+    response = client.get("/api/v1/workspaces", headers={"Authorization":"Bearer " + "x" * 40})
+    assert response.status_code == 503
+    assert response.json()["code"] == "DATABASE_UNAVAILABLE"
+    assert client.get("/api/v1/health", headers={"Authorization":"Bearer " + "x" * 40}).json()["database"] == "unavailable"
+    assert not missing.exists()

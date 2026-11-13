@@ -11,5 +11,25 @@
 | G07 | P1 | Schema lacks full job attempts, embedding provenance, validation issues, entity relations and analysis parameters. | Add reviewed migrations and backfill when implementing features. |
 | G08 | P1 | OpenAPI stub and API implementation are incomplete. | Synchronize contract with actual routes and test it. |
 | G09 | P1 | No golden corpus, OCR/retrieval accuracy or recovery benchmark. | Build rights-cleared suite and measure. |
-| G10 | P1 | Rust/Cargo not found on PATH; desktop dependencies not established. | Provision only with authorization and verify Windows build. |
+| G10 | P1 | Rust/Cargo and frontend dependencies were initially unavailable. | User authorized installation; Windows executable built. Clean-machine reproducibility, license and installer checks remain open. |
 | G11 | P1 | Baseline initially lacked a Git repository. | Resolved for foundation: initialized locally and committed as `98187bf`; future milestones still require separate evidence. |
+
+| G12 | P0 | Local CLI import is not the approved Tauri picker capability; adversarial path replacement/races are not fully tested. | Do not expose filesystem paths via HTTP; implement handle/capability lifecycle and adversarial tests. |
+| G13 | P0 | PDF viewer is an isolated prototype; registered versions stay PENDING, and page extraction/citation navigation are missing. | Integrate and verify vertical slice before G1. |
+| G14 | P1 | CI lint/type-check and Windows packaging are not configured or verified; no dependency download was performed. | Provision controlled dependencies with authorization and record reproducibility/license evidence. |
+| G15 | P1 | pypdf installed metadata reports BSD-3-Clause, but transitive license and distribution review is pending. | Review full dependency tree before shipping. |
+
+| G16 | P1 | Migration checksum ledger without baseline row must not authorize adoption of an existing database. | Fail closed and test added; full adoption/backfill and reverse migration remain open under G04. |
+
+| G17 | P0 | Desktop PDF viewer is independent of registered documents and backend; a browser smoke test does not establish native Tauri end-to-end correctness. | Connect trusted selected-file capability to backend, test source identity, native navigation and failure states. |
+
+| G18 | P0 | Tauri does not start/manage the sidecar or receive one-time selected-file capabilities; no integrated document persistence. | Implement supervised packaged sidecar, protected IPC, selected-file grant and native restart E2E. |
+| G19 | P1 | SQLite snapshot excludes PDF sources, manifest, encryption and relink validation. | Design protected backup/restore and verify real recovery before release. |
+| G20 | P1 | Provisional dependency inventory omits Python transitive packages and has 420 license-unknown entries; no release SBOM. | Resolve licenses, installed runtime scope and transitive dependencies; security and legal review. |
+| G21 | P1 | Windows Python and frontend CI passed for e1f99af; no native Windows E2E in CI. | Add native E2E and supply-chain checks before gate acceptance. |
+| G22 | P1 | Workspace list returns all entries and has no keyset pagination. | Add documented cursor pagination with API and tests before large-scale use. |
+
+| G23 | P0 | Tauri still does not start, monitor or restart the packaged sidecar, issue grants from a native picker, or display persisted documents. | Implement trusted native controller and native E2E; do not mark G1 accepted. |
+| G24 | P0 | One-use grant protocol has unit/subprocess tests but no native parent, adversarial handle-race review, or full authorization audit. | Security review and capability-bound native tests, including Windows file identity. |
+| G25 | P1 | One shutdown test timed out when source and frozen test suites ran concurrently; sequential reruns passed. | Investigate Windows pipe/process lifecycle under concurrent load before release. |
+| G26 | P1 | Native UI automation could not initialize: Windows sandbox setup helper failed before surface selection. | Restore the UI automation environment and run native E2E after desktop integration. |

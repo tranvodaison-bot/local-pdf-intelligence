@@ -9,3 +9,33 @@
 | P0-04 | PDF viewer and citation | P0 | BLOCKED | P0-03, Tauri toolchain | Actual Windows E2E, rotation/crop tests |
 | P0-05 | OCR, RAG and evidence validator | P0 | NOT_STARTED | P0-03, P0-04 | Golden cases and fail-closed citations |
 | P0-06 | Backup, offline and release | P0 | NOT_STARTED | P0-01–05 | Windows acceptance and license evidence |
+
+## CTO-001 execution
+
+| ID | Task / module | Priority | Status | Dependency | Acceptance / evidence |
+|---|---|---|---|---|---|
+| CTO-001-G0 | Audit handoff and remote | P0 | VERIFIED | Remote read | `docs/governance/BASELINE_AUDIT.md` |
+| CTO-001-IMPORT | Local CLI registration prototype | P0 | IN_PROGRESS | SQLite, pypdf | 12 tests in `docs/evidence/CTO-001-tests.txt`; trusted picker and race hardening outstanding |
+| CTO-001-API | Auth and local-only health | P0 | IN_PROGRESS | Session token | TestClient and live loopback socket tests; Tauri handoff not verified |
+| CTO-001-VIEWER | Tauri, React and PDF.js viewer | P0 | IN_PROGRESS | Trusted picker and backend integration | Windows exe built and process starts; browser synthetic PDF smoke passed; native Tauri interaction not tested |
+| CTO-001-CI | CI lint/typecheck and tests | P1 | NOT_STARTED | Controlled dependency provisioning | No CI evidence |
+
+## CTO-002 — Foundation recovery
+
+| ID | Task / module | Priority | Status | Dependencies | Evidence / remaining acceptance |
+|---|---|---|---|---|---|
+| CTO-002-01 | Sidecar protocol and local auth | P0 | IN_PROGRESS | Tauri lifecycle, bundled runtime | Actual subprocess starts on loopback, token via stdin and EOF shutdown tested; Tauri integration not implemented |
+| CTO-002-02 | Workspace API and persistence | P0 | IN_PROGRESS | Sidecar database configuration | Authenticated list/create and sidecar restart tests; document metadata and pagination missing |
+| CTO-002-03 | PDF viewer text search | P0 | IN_PROGRESS | Tauri picker/backend | Browser synthetic PDF search smoke passed; native E2E and backend integration missing |
+| CTO-002-04 | Backup/restore baseline | P1 | IN_PROGRESS | Backup manifests and source relinking | SQLite snapshot to new file and CLI tests pass; no encryption/manifest/source assets |
+| CTO-002-05 | CI and dependency inventory | P1 | IN_PROGRESS | License/SBOM review | Windows CI passed for e1f99af; 526 provisional components, 420 unknown licenses |
+| CTO-002-G1 | Foundation acceptance | P0 | BLOCKED | 01–05 and native Windows E2E | NOT_ACCEPTED: picker, desktop integration, real-source E2E, evidence and security remain |
+
+## CTO-002R — Foundation integration
+
+| ID | Task / module | Priority | Status | Dependencies | Evidence / remaining acceptance |
+|---|---|---|---|---|---|
+| CTO-002R-01 | One-use selection grants and registered file API | P0 | IN_PROGRESS | Native parent integration, security review | Workspace-scoped, 60-second grants via sidecar pipe; API forbids arbitrary path; tests pass. |
+| CTO-002R-02 | Packaged Python sidecar | P0 | IN_PROGRESS | Tauri supervisor and packaging | PyInstaller Windows binary built and 4 subprocess tests passed; Tauri does not start it. |
+| CTO-002R-03 | Tauri picker, lifecycle and persistent viewer | P0 | NOT_STARTED | Trusted parent integration and native test harness | No connected desktop import/reopen or native E2E evidence. |
+| CTO-002R-04 | G1 acceptance | P0 | BLOCKED | CTO-002R-03 and full error/security tests | NOT_ACCEPTED; no native screenshot or video. |

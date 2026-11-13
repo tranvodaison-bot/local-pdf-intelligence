@@ -12,6 +12,7 @@ security:
   - bearerAuth: []
 paths:
   /health:
+    x-implementation-status: implemented
     get:
       operationId: health
       responses:
@@ -20,11 +21,32 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Health' }
+        '401':
+          description: Missing or invalid bearer token
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '403':
+          description: Non-loopback peer or untrusted Origin
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
   /workspaces:
+    x-implementation-status: implemented
     get:
       operationId: listWorkspaces
+      description: Returns all active workspaces; pagination is not yet implemented.
       responses:
-        '200': { description: List workspaces }
+        '200':
+          description: List workspaces
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Workspace' }
+        '401': { description: Missing or invalid bearer token }
+        '403': { description: Non-loopback peer or untrusted Origin }
+        '503': { description: Database unavailable }
     post:
       operationId: createWorkspace
       requestBody:
@@ -33,12 +55,22 @@ paths:
           application/json:
             schema:
               type: object
+              additionalProperties: false
               required: [name]
               properties:
-                name: { type: string, minLength: 1 }
+                name: { type: string, minLength: 1, maxLength: 200 }
       responses:
-        '201': { description: Created }
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Workspace' }
+        '401': { description: Missing or invalid bearer token }
+        '403': { description: Non-loopback peer or untrusted Origin }
+        '422': { description: Invalid request }
+        '503': { description: Database unavailable }
   /documents/import:
+    x-implementation-status: implemented
     post:
       operationId: importDocument
       description: File picker granted capability token; no unrestricted client filesystem paths.
@@ -53,8 +85,36 @@ paths:
                 workspace_id: { type: string }
                 file_selection_token: { type: string }
       responses:
-        '202': { description: Accepted }
+        '200': { description: Imported or duplicate; one-use capability consumed }
+        '400': { description: Source invalid or unavailable }
+        '403': { description: Capability invalid, expired or already used }
+  /workspaces/{workspace_id}/documents:
+    x-implementation-status: implemented
+    parameters:
+      - { name: workspace_id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: listDocuments
+      responses:
+        '200': { description: Registered document versions without source paths }
+        '503': { description: Database unavailable }
+  /versions/{version_id}/content:
+    x-implementation-status: implemented
+    parameters:
+      - { name: version_id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: readRegisteredDocument
+      responses:
+        '200':
+          description: Original PDF only when current bytes match the registered SHA-256
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+        '403': { description: Source unreadable }
+        '404': { description: Source or version missing }
+        '409': { description: Source changed }
+        '503': { description: Database unavailable }
   /search:
+    x-implementation-status: planned
     post:
       operationId: search
       requestBody:
@@ -74,6 +134,7 @@ paths:
       responses:
         '200': { description: Matches with page/block evidence anchors }
   /research/answer:
+    x-implementation-status: planned
     post:
       operationId: researchAnswer
       requestBody:
@@ -98,6 +159,20 @@ components:
       type: http
       scheme: bearer
   schemas:
+    Workspace:
+      type: object
+      required: [id, name, created_at]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        created_at: { type: string }
+    Error:
+      type: object
+      required: [code, message, request_id]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        request_id: { type: string }
     Health:
       type: object
       properties:

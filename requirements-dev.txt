@@ -3,3 +3,6 @@ fastapi==0.136.3
 uvicorn==0.48.0
 pytest==8.3.3
 httpx==0.28.1
+pypdf==6.13.0
+reportlab==4.4.10
+PyYAML==6.0.3

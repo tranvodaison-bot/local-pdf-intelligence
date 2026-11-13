@@ -1,0 +1,12 @@
+CTO-001 desktop prototype evidence — 2026-11-13
+Build workspace: local C: workspace copy of apps/desktop to avoid Google Drive write errors.
+Dependency downloads: user explicitly approved; see DEPENDENCY_INSTALL_LOG.md and package/Cargo lockfiles.
+
+Frontend: npm run build — exit 0, TypeScript and Vite build passed (bundle size warning).
+Windows: npm run tauri -- build --no-bundle — exit 0 after icon fix; release exe generated, no installer.
+Startup: created hidden Tauri executable process and observed it alive for 5 seconds, then terminated that process; PASS for process survival only.
+Browser viewer: python -B tests/desktop_smoke.py — exit 0; Edge headless, synthetic two-page PDF, first and second canvas pixels differ, page 2 shown, original SHA-256 unchanged, external requests blocked. Screenshot desktop-browser-smoke.png is a browser test, not an actual Tauri screenshot.
+
+Not tested: interaction in the native Tauri window, viewer integration with local backend and persistence, trusted capability and source race guarantees, OCR, citation anchors, firewall offline test, installer and clean-machine test. Gate G1 is not met.
+
+SHA-256 of built executable: 4e1bffe4c6f7a1017dd991a4b7dd95c6ebb835fa67e547f3a019dc279d2a6210. Frontend main.tsx hash matches build copy.

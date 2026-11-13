@@ -1,0 +1,12 @@
+CTO-001 foundation test evidence — 2026-11-13
+Host: Windows, Python 3.14.2; local dependencies already installed.
+Command: python -m pytest -q -p no:cacheprovider tests
+Environment: PYTHONDONTWRITEBYTECODE=1
+Exit: 0
+Output:
+............                                                             [100%]
+12 passed in 2.68s
+
+Tests use generated synthetic PDFs. Covers migration idempotency, integrity, FK, failed migration rollback and checksum mismatch; authenticated health with local peer and Origin rejection using TestClient; PDF registration with source hash unchanged, duplicate, invalid header, traversal, malformed and encrypted inputs; refusal to open source PDF as CLI database; subprocess CLI creation and import smoke test; live loopback Uvicorn health and unauthorized rejection.
+Syntax check: Python ast.parse: 7 files, exit 0.
+Not covered: real Tauri/desktop, PDF viewer, secure desktop file-picker grant, race-resistant OS file handle and junction safety under adversarial mutation, OCR, RAG, citation verification, migration backfill/reverse migration, offline firewall, installer.
