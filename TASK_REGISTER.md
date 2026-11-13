@@ -17,5 +17,5 @@
 | CTO-001-G0 | Audit handoff and remote | P0 | VERIFIED | Remote read | `docs/governance/BASELINE_AUDIT.md` |
 | CTO-001-IMPORT | Local CLI registration prototype | P0 | IN_PROGRESS | SQLite, pypdf | 12 tests in `docs/evidence/CTO-001-tests.txt`; trusted picker and race hardening outstanding |
 | CTO-001-API | Auth and local-only health | P0 | IN_PROGRESS | Session token | TestClient and live loopback socket tests; Tauri handoff not verified |
-| CTO-001-VIEWER | Tauri, React and PDF.js viewer | P0 | BLOCKED | Rust/Cargo and reviewed dependencies | No Windows viewer smoke test |
+| CTO-001-VIEWER | Tauri, React and PDF.js viewer | P0 | IN_PROGRESS | Trusted picker and backend integration | Windows exe built and process starts; browser synthetic PDF smoke passed; native Tauri interaction not tested |
 | CTO-001-CI | CI lint/typecheck and tests | P1 | NOT_STARTED | Controlled dependency provisioning | No CI evidence |

@@ -10,3 +10,6 @@
 | 2026-11-13 | `docs/evidence/CTO-001-tests.txt`: 12 tests passed | Automated local tests; no GUI or installer |
 | 2026-11-13 | `docs/governance/BASELINE_AUDIT.md` | ZIP manifest 23/23; remote read at ce88e41 |
 | 2026-11-13 | Foundation implementation commit `031bf4f` | Local CLI import, API boundary and automated tests; not a G1 sign-off |
+| 2026-11-13 | `docs/evidence/CTO-001-integrity-tests.txt`: 15 tests passed | Synthetic-source change/identity and incomplete-ledger regression; no G1 sign-off |
+| 2026-11-13 | `docs/evidence/CTO-001-desktop-tests.txt`; `desktop-browser-smoke.png` | Tauri executable build and process start; browser-only PDF smoke; no native E2E |
+| 2026-11-13 | Code commits `53666bf` and `7e8cb06` | Integrity fixes and standalone viewer prototype; integration and native E2E remain open |

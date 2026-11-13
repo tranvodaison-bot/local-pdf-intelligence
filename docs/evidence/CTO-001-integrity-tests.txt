@@ -1,0 +1,12 @@
+CTO-001 — integrity regression, 2026-11-13
+Baseline: bb0c76897a55e59bd9f5d4a43c428a092eb83a78
+Command: python -m pytest -q -p no:cacheprovider tests
+Environment: Windows, Python 3.14.2, PYTHONDONTWRITEBYTECODE=1
+Exit code: 0
+Output:
+...............                                                          [100%]
+15 passed in 2.96s
+
+The tests include a synthetic PDF changed by a test callback during registration and a mocked path-identity replacement. Both reject the import and leave no document registered. A pre-existing SQLite database with an incomplete migration ledger is rejected and its existing row preserved. No user source PDF was used.
+
+Limitations: mocked path identity is not an OS-level adversarial race test. The pathname can still change after the final check; desktop capability-bound handle and reopen verification remain unimplemented. PDF viewer, Windows E2E and migration backfill/reverse migration remain untested.
