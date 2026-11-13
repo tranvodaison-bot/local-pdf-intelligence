@@ -11,6 +11,7 @@ import threading
 import uvicorn
 
 from .main import app
+from .capabilities import InvalidCapability, grants
 
 def main():
     line = sys.stdin.buffer.readline(4097)
@@ -27,11 +28,26 @@ def main():
     config = uvicorn.Config(app, host="127.0.0.1", log_config=None, access_log=False)
     server = uvicorn.Server(config)
     def monitor_parent():
-        while sys.stdin.buffer.read(1):
-            pass
+        while True:
+            line = sys.stdin.buffer.readline(65537)
+            if not line or len(line) > 65536:
+                break
+            request_id = None
+            try:
+                request = json.loads(line)
+                if not isinstance(request, dict) or request.get("op") != "grant":
+                    raise ValueError("unsupported command")
+                request_id = request.get("request_id")
+                if not isinstance(request_id, str) or len(request_id) > 64:
+                    raise ValueError("invalid request id")
+                capability = grants.issue(request.get("path"), request.get("workspace_id"))
+                response = {"request_id":request_id, "capability":capability}
+            except (ValueError, TypeError, InvalidCapability):
+                response = {"request_id":request_id, "error":"GRANT_INVALID"}
+            print(json.dumps(response), flush=True)
         server.should_exit = True
-    threading.Thread(target=monitor_parent, daemon=True).start()
     print(json.dumps({"host":"127.0.0.1", "port":sock.getsockname()[1]}), flush=True)
+    threading.Thread(target=monitor_parent, daemon=True).start()
     try:
         server.run(sockets=[sock])
     finally:

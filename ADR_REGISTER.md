@@ -15,3 +15,6 @@ ADR-011 does not replace the trusted desktop capability required by G1. The view
 
 ## ADR-013 — Workspace API increment (CTO-002)
 Status: ACCEPTED for development. Add authenticated list/create routes backed by an existing locally configured SQLite database; the client cannot choose filesystem paths. New workspace IDs use UUID4. No schema migration required. Pagination and the Tauri-to-sidecar lifecycle remain outstanding. Restore is available only to a new database file through the local CLI, not as an HTTP operation.
+
+## ADR-014 — One-use local selection grants (CTO-002R)
+Status: development implementation; not security sign-off. The trusted parent may issue a workspace-scoped 60-second one-use grant via sidecar stdin. Authenticated HTTP import accepts only the opaque capability, not a path. A registered version may be read by version ID only after current source bytes and file identity are checked against SHA-256. No schema migration. Desktop issuance, full path race hardening, native E2E and packaging remain open.

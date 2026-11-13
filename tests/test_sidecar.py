@@ -9,10 +9,14 @@ from pathlib import Path
 
 API = Path(__file__).resolve().parents[1] / "apps" / "api"
 
+def sidecar_command():
+    executable = os.environ.get("LPI_SIDECAR_EXECUTABLE")
+    return [executable] if executable else [sys.executable, "-m", "localpdf.sidecar"]
+
 def test_sidecar_starts_authenticated_and_stops_on_parent_eof():
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     env.pop("LOCALPDF_SESSION_TOKEN", None)
-    process = subprocess.Popen([sys.executable, "-m", "localpdf.sidecar"], cwd=API, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    process = subprocess.Popen(sidecar_command(), cwd=API, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     token = "s" * 40
     try:
         process.stdin.write(token + "\n")
@@ -21,7 +25,7 @@ def test_sidecar_starts_authenticated_and_stops_on_parent_eof():
         import threading
         lines = queue.Queue()
         threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True).start()
-        ready = json.loads(lines.get(timeout=10))
+        ready = json.loads(lines.get(timeout=30))
         assert ready["host"] == "127.0.0.1"
         url = "http://127.0.0.1:" + str(ready["port"]) + "/api/v1/health"
         for _ in range(100):
@@ -49,7 +53,7 @@ def test_sidecar_starts_authenticated_and_stops_on_parent_eof():
             process.wait(timeout=5)
 
 def test_sidecar_rejects_short_token():
-    result = subprocess.run([sys.executable, "-m", "localpdf.sidecar"], cwd=API, input="short\n", capture_output=True, text=True, timeout=10)
+    result = subprocess.run(sidecar_command(), cwd=API, input="short\n", capture_output=True, text=True, timeout=30)
     assert result.returncode == 2
     assert "short" not in result.stdout + result.stderr
 
@@ -67,13 +71,13 @@ def test_workspace_persists_across_sidecar_restart(tmp_path):
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", LOCALPDF_DB_PATH=str(db_path))
     token = "r" * 40
     def run_once(create):
-        process = subprocess.Popen([sys.executable, "-m", "localpdf.sidecar"], cwd=API, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        process = subprocess.Popen(sidecar_command(), cwd=API, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         try:
             process.stdin.write(token + "\n")
             process.stdin.flush()
             lines = queue.Queue()
             threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True).start()
-            ready = json.loads(lines.get(timeout=10))
+            ready = json.loads(lines.get(timeout=30))
             url = "http://127.0.0.1:" + str(ready["port"]) + "/api/v1/workspaces"
             headers = {"Authorization":"Bearer " + token, "Content-Type":"application/json"}
             for _ in range(100):
@@ -100,3 +104,64 @@ def test_workspace_persists_across_sidecar_restart(tmp_path):
     assert after_restart[0]["id"] == created["id"]
     with sqlite3.connect(db_path) as db:
         assert db.execute("SELECT count(*) FROM workspaces").fetchone()[0] == 1
+
+
+def test_control_pipe_grant_import_and_reopen_after_restart(tmp_path):
+    import hashlib
+    import queue
+    import threading
+    from reportlab.pdfgen import canvas
+    sys.path.insert(0, str(API))
+    from localpdf.storage import connect, migrate
+    source = tmp_path / "fixture.pdf"
+    pdf = canvas.Canvas(str(source)); pdf.drawString(72,720,"Synthetic fixture"); pdf.showPage(); pdf.save()
+    expected = hashlib.sha256(source.read_bytes()).hexdigest()
+    db_path = tmp_path / "workspace.sqlite"
+    db = connect(db_path); migrate(db); db.execute("INSERT INTO workspaces(id,name) VALUES ('w','Test')"); db.commit(); db.close()
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", LOCALPDF_DB_PATH=str(db_path))
+    token = "v" * 40
+    headers = {"Authorization":"Bearer " + token, "Content-Type":"application/json"}
+    def read_line(process):
+        lines = queue.Queue()
+        threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True).start()
+        return json.loads(lines.get(timeout=30))
+    def start():
+        process = subprocess.Popen(sidecar_command(), cwd=API, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8")
+        process.stdin.write(token + "\n"); process.stdin.flush()
+        ready = read_line(process)
+        base = "http://127.0.0.1:" + str(ready["port"]) + "/api/v1"
+        for _ in range(100):
+            try:
+                with urllib.request.urlopen(urllib.request.Request(base + "/health", headers=headers),timeout=1) as response:
+                    if response.status == 200: break
+            except (urllib.error.URLError, TimeoutError): time.sleep(.05)
+        else:
+            process.kill(); process.wait(timeout=5); raise AssertionError("sidecar did not start")
+        return process, base
+    def stop(process):
+        process.stdin.close()
+        try: process.wait(timeout=10)
+        except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
+    process, base = start()
+    try:
+        process.stdin.write(json.dumps({"op":"grant", "request_id":"test", "workspace_id":"w", "path":str(source)}) + "\n"); process.stdin.flush()
+        reply = read_line(process)
+        assert reply["request_id"] == "test" and "path" not in reply
+        payload = json.dumps({"workspace_id":"w", "file_selection_token":reply["capability"]}).encode()
+        with urllib.request.urlopen(urllib.request.Request(base + "/documents/import", headers=headers, data=payload),timeout=10) as response:
+            imported = json.load(response)
+        assert imported["sha256"] == expected
+    finally:
+        # Simulate an unexpected sidecar crash after the database transaction.
+        process.kill()
+        process.wait(timeout=5)
+    process, base = start()
+    try:
+        with urllib.request.urlopen(urllib.request.Request(base + "/workspaces/w/documents", headers=headers),timeout=5) as response:
+            assert json.load(response)[0]["version_id"] == imported["version_id"]
+        with urllib.request.urlopen(urllib.request.Request(base + "/versions/" + imported["version_id"] + "/content", headers=headers),timeout=5) as response:
+            assert hashlib.sha256(response.read()).hexdigest() == expected
+    finally: stop(process)
+    after = hashlib.sha256(source.read_bytes()).hexdigest()
+    assert after == expected
+    print(f"SHA256 before={expected} after_restart={after}")

@@ -70,7 +70,7 @@ paths:
         '422': { description: Invalid request }
         '503': { description: Database unavailable }
   /documents/import:
-    x-implementation-status: planned
+    x-implementation-status: implemented
     post:
       operationId: importDocument
       description: File picker granted capability token; no unrestricted client filesystem paths.
@@ -85,7 +85,34 @@ paths:
                 workspace_id: { type: string }
                 file_selection_token: { type: string }
       responses:
-        '202': { description: Accepted }
+        '200': { description: Imported or duplicate; one-use capability consumed }
+        '400': { description: Source invalid or unavailable }
+        '403': { description: Capability invalid, expired or already used }
+  /workspaces/{workspace_id}/documents:
+    x-implementation-status: implemented
+    parameters:
+      - { name: workspace_id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: listDocuments
+      responses:
+        '200': { description: Registered document versions without source paths }
+        '503': { description: Database unavailable }
+  /versions/{version_id}/content:
+    x-implementation-status: implemented
+    parameters:
+      - { name: version_id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: readRegisteredDocument
+      responses:
+        '200':
+          description: Original PDF only when current bytes match the registered SHA-256
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+        '403': { description: Source unreadable }
+        '404': { description: Source or version missing }
+        '409': { description: Source changed }
+        '503': { description: Database unavailable }
   /search:
     x-implementation-status: planned
     post:

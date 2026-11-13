@@ -22,3 +22,9 @@ The source is opened read-only, checked for header, size and parseability, rehas
 `python -m localpdf.cli --db "C:\absolute\new-restored.sqlite" restore --from "C:\absolute\backup.sqlite"`
 
 Both paths must be absolute and the destination must not exist. SQLite integrity is checked; source PDF files are references only and are not included. This initial utility does not supply encrypted backups, a manifest, source relinking or automated scheduling. Store snapshots in a protected location.
+
+## CTO-002R sidecar prototype
+
+`python -m localpdf.sidecar` consumes the session token as the first line of stdin, reports its loopback port, and terminates on EOF. The trusted parent can request a workspace-scoped, one-use 60-second file-selection grant via the control pipe; authenticated HTTP import accepts that grant, never a path. Registered bytes are returned only after SHA-256 verification. The native Tauri controller/picker is not connected yet.
+
+For a development-only Windows binary, install PyInstaller only with approval, then run `scripts/build_sidecar.ps1 -BuildRoot <absolute-local-build-directory>` and capture its log. Do not distribute without license, security and native E2E review.

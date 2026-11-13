@@ -1,9 +1,11 @@
 """SQLite migrations; no automatic adoption of pre-existing schemas."""
 import hashlib
 import sqlite3
+import sys
 from pathlib import Path
 
-MIGRATION = Path(__file__).resolve().parents[3] / "db" / "001_initial.sql"
+# The SQL baseline is bundled alongside a frozen sidecar, or read from the repo in development.
+MIGRATION = (Path(sys._MEIPASS) if getattr(sys, "frozen", False) else Path(__file__).resolve().parents[3]) / "db" / "001_initial.sql"
 
 def connect(path):
     db = sqlite3.connect(path)

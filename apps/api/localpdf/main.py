@@ -1,5 +1,6 @@
 """Authenticated API limited to loopback peers; desktop IPC remains unimplemented."""
 import hmac
+import hashlib
 import os
 import sqlite3
 import uuid
@@ -7,7 +8,9 @@ from contextlib import closing
 from pathlib import Path
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
+from .capabilities import InvalidCapability, grants
+from .importer import ImportFailure, MAX_BYTES, import_pdf
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 app = FastAPI(title="Local PDF Intelligence", version="0.0.1", docs_url=None, redoc_url=None, openapi_url=None)
@@ -95,3 +98,66 @@ def create_workspace(body: WorkspaceCreate):
             return {"id": row[0], "name": row[1], "created_at": row[2]}
     except sqlite3.Error as exc:
         raise HTTPException(status_code=503, detail="Database unavailable") from exc
+
+
+class DocumentImport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    workspace_id: str = Field(min_length=1, max_length=128)
+    file_selection_token: str = Field(min_length=1, max_length=128)
+
+@app.post("/api/v1/documents/import")
+def import_document(body: DocumentImport):
+    try:
+        path = grants.consume(body.file_selection_token, body.workspace_id)
+    except InvalidCapability as exc:
+        raise HTTPException(status_code=403, detail="CAPABILITY_INVALID") from exc
+    try:
+        with closing(open_existing_database()) as db:
+            return import_pdf(db, body.workspace_id, path)
+    except ImportFailure as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database unavailable") from exc
+
+@app.get("/api/v1/workspaces/{workspace_id}/documents")
+def list_documents(workspace_id: str):
+    try:
+        with closing(open_existing_database()) as db:
+            rows = db.execute("""SELECT d.id,d.title,dv.id,dv.version_no,dv.status,fa.sha256,fa.byte_size
+                FROM documents d JOIN document_versions dv ON dv.document_id=d.id
+                JOIN file_assets fa ON fa.id=dv.file_asset_id
+                WHERE d.workspace_id=? AND d.deleted_at IS NULL ORDER BY d.created_at DESC,d.id DESC,dv.version_no DESC""", (workspace_id,)).fetchall()
+            return [{"document_id":r[0],"title":r[1],"version_id":r[2],"version_no":r[3],"status":r[4],"sha256":r[5],"byte_size":r[6]} for r in rows]
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database unavailable") from exc
+
+@app.get("/api/v1/versions/{version_id}/content")
+def read_registered_document(version_id: str):
+    try:
+        with closing(open_existing_database()) as db:
+            row = db.execute("""SELECT fa.original_path,fa.sha256,fa.byte_size FROM document_versions dv
+                JOIN documents d ON d.id=dv.document_id JOIN file_assets fa ON fa.id=dv.file_asset_id
+                WHERE dv.id=? AND d.deleted_at IS NULL""", (version_id,)).fetchone()
+    except sqlite3.Error as exc:
+        raise HTTPException(status_code=503, detail="Database unavailable") from exc
+    if row is None:
+        raise HTTPException(status_code=404, detail="DOCUMENT_NOT_FOUND")
+    path, expected_hash, size = Path(row[0]), row[1], row[2]
+    if size < 1 or size > MAX_BYTES or not isinstance(expected_hash, str) or len(expected_hash) != 64 or any(c not in "0123456789abcdef" for c in expected_hash):
+        raise HTTPException(status_code=409, detail="SOURCE_INVALID")
+    try:
+        for part in (path, *path.parents):
+            if part.is_symlink() or (hasattr(part, "is_junction") and part.is_junction()):
+                raise HTTPException(status_code=409, detail="SOURCE_CHANGED")
+        with path.open("rb") as source:
+            initial = os.fstat(source.fileno())
+            data = source.read(MAX_BYTES + 1)
+            final = os.fstat(source.fileno())
+            current = os.stat(path, follow_symlinks=False)
+            if len(data) != size or initial.st_size != size or final.st_size != size or (final.st_dev,final.st_ino) != (current.st_dev,current.st_ino) or not hmac.compare_digest(hashlib.sha256(data).hexdigest(),expected_hash):
+                raise HTTPException(status_code=409, detail="SOURCE_CHANGED")
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail="SOURCE_MISSING") from exc
+    except OSError as exc:
+        raise HTTPException(status_code=403, detail="SOURCE_UNREADABLE") from exc
+    return Response(content=data, media_type="application/pdf", headers={"Cache-Control":"no-store", "X-Content-Type-Options":"nosniff"})
