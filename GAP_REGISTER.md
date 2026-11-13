@@ -12,4 +12,4 @@
 | G08 | P1 | OpenAPI stub and API implementation are incomplete. | Synchronize contract with actual routes and test it. |
 | G09 | P1 | No golden corpus, OCR/retrieval accuracy or recovery benchmark. | Build rights-cleared suite and measure. |
 | G10 | P1 | Rust/Cargo not found on PATH; desktop dependencies not established. | Provision only with authorization and verify Windows build. |
-| G11 | P1 | Working directory is not a Git repository. | Record missing commit evidence; establish repository when permitted. |
+| G11 | P1 | Baseline initially lacked a Git repository. | Resolved for foundation: initialized locally and committed as `98187bf`; future milestones still require separate evidence. |
