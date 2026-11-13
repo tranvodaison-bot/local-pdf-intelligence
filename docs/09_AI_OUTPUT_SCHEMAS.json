@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchAnswer",
+  "type": "object",
+  "required": [
+    "status",
+    "mode",
+    "claims",
+    "limitations",
+    "unknowns"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "ANSWERED",
+        "PARTIAL",
+        "NOT_ENOUGH_EVIDENCE",
+        "ERROR"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "EVIDENCE_ONLY",
+        "REASONING"
+      ]
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "kind",
+          "text",
+          "citations"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "SOURCE_FACT",
+              "INFERENCE",
+              "UNKNOWN"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "reasoning_summary": {
+            "type": "string"
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "counterevidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "document_version_id",
+                "page_index",
+                "block_id",
+                "quote"
+              ],
+              "properties": {
+                "document_version_id": {
+                  "type": "string"
+                },
+                "page_index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "block_id": {
+                  "type": "string"
+                },
+                "quote": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

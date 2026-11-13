@@ -1,0 +1,1 @@
+No license is granted for future product source code by this specification. The product owner must select an appropriate project license. Every dependency, model weight and PDF parsing component must be reviewed before closed-source distribution.

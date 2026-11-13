@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Local PDF Intelligence API
+  version: 0.1.0-draft
+  description: Initial contract; Codex must expand/lint and keep synchronized with code.
+servers:
+  - url: http://127.0.0.1:{port}/api/v1
+    variables:
+      port:
+        default: '8765'
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200':
+          description: Runtime health
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+  /workspaces:
+    get:
+      operationId: listWorkspaces
+      responses:
+        '200': { description: List workspaces }
+    post:
+      operationId: createWorkspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, minLength: 1 }
+      responses:
+        '201': { description: Created }
+  /documents/import:
+    post:
+      operationId: importDocument
+      description: File picker granted capability token; no unrestricted client filesystem paths.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [workspace_id, file_selection_token]
+              properties:
+                workspace_id: { type: string }
+                file_selection_token: { type: string }
+      responses:
+        '202': { description: Accepted }
+  /search:
+    post:
+      operationId: search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [workspace_id, document_version_ids, query]
+              properties:
+                workspace_id: { type: string }
+                document_version_ids:
+                  type: array
+                  items: { type: string }
+                query: { type: string }
+                limit: { type: integer, minimum: 1, maximum: 100, default: 10 }
+      responses:
+        '200': { description: Matches with page/block evidence anchors }
+  /research/answer:
+    post:
+      operationId: researchAnswer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [workspace_id, document_version_ids, mode, question]
+              properties:
+                workspace_id: { type: string }
+                document_version_ids:
+                  type: array
+                  items: { type: string }
+                mode: { type: string, enum: [EVIDENCE_ONLY, REASONING] }
+                question: { type: string }
+      responses:
+        '200': { description: Grounded research answer }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Health:
+      type: object
+      properties:
+        status: { type: string }
+        database: { type: string }
+        model: { type: string }

@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+build/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+models/
+private_data/
+eval/private_cases.jsonl
+*.pdf
+*.env
+!examples/README.md

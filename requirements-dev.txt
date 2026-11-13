@@ -1,0 +1,5 @@
+# Versions observed locally, not a lockfile or license approval.
+fastapi==0.136.3
+uvicorn==0.48.0
+pytest==8.3.3
+httpx==0.28.1
