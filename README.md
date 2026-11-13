@@ -1,3 +1,5 @@
+> **CTO-002R:** Sidecar đã hỗ trợ grant chọn tệp dùng một lần qua kênh điều khiển và kiểm tra SHA-256 khi đọc lại phiên bản. Sidecar Windows đã được build/test riêng; Tauri chưa quản lý sidecar hoặc nối picker và viewer. G1 vẫn **NOT_ACCEPTED**.
+
 > **CTO-002 cập nhật:** Nhánh công việc có viewer PDF độc lập, tìm lớp chữ và tiện ích snapshot SQLite cục bộ. Đây chưa phải ứng dụng tích hợp: sidecar, chọn tệp tin cậy, quản lý tài liệu sau khởi động lại và Windows E2E còn thiếu. G1: **NOT_ACCEPTED**. Xem `TASK_REGISTER.md` và `docs/12_HANDOVER_REGISTER.md`.
 
 # LOCAL PDF INTELLIGENCE — CODEX HANDOFF v1.0

@@ -48,3 +48,9 @@ Evidence must be updated with logs, commit IDs and screenshots. Never mark CLOSE
 - **IN_PROGRESS:** viewer searches existing PDF text and navigates to first matching page in a browser smoke test; no native Tauri PDF interaction evidence.
 - **IN_PROGRESS:** GitHub Actions Windows Python/frontend jobs passed for e1f99af; dependency inventory is provisional and incomplete, native E2E is not covered.
 - **G1 NOT_ACCEPTED:** trusted native picker, sidecar integration, persistent imported document workflow, Windows E2E, full license review and secure restore remain open. See `GAP_REGISTER.md` and CTO-002 evidence.
+
+## CTO-002R — backend integration increment
+
+- **IN_PROGRESS:** sidecar control pipe issues bounded, workspace-scoped, one-use file grants; API imports only using grants, lists registered metadata and serves a registered PDF only after SHA-256 verification. It does not expose source paths in list responses.
+- **IN_PROGRESS:** frozen sidecar binary built and tested independently. Tauri supervisor, native picker and connected persistent viewer remain unimplemented.
+- **NOT ACCEPTED:** no native Windows end-to-end, screenshot/video or complete adversarial filesystem review. One concurrent shutdown timeout remains open. See `docs/evidence/CTO-002R-evidence.md`.

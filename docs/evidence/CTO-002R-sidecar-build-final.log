@@ -1,0 +1,148 @@
+135 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.2
+135 INFO: Python: 3.14.2
+156 INFO: Platform: Windows-10-10.0.19045-SP0
+157 INFO: Python environment: C:\Users\Windows\AppData\Local\Programs\Python\Python314
+157 INFO: wrote ..\localpdf-sidecar.spec
+524 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\python314.zip',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\DLLs',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source\\scripts',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source']
+921 INFO: Appending 'datas' from .spec
+921 INFO: checking Analysis
+921 INFO: Building Analysis because Analysis-00.toc is non existent
+921 INFO: Looking for Python shared library...
+921 INFO: Using Python shared library: C:\Users\Windows\AppData\Local\Programs\Python\Python314\python314.dll
+921 INFO: Running Analysis Analysis-00.toc
+921 INFO: Target bytecode optimization level: 0
+921 INFO: Initializing module dependency graph...
+923 INFO: Initializing module graph hook caches...
+1019 INFO: Analyzing modules for base_library.zip ...
+2801 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+3269 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+5837 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+5855 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+7114 INFO: Caching module dependency graph...
+7138 INFO: Analyzing C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\source\scripts\sidecar_entry.py
+7150 INFO: Processing standard module hook 'hook-uvicorn.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+7733 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+7869 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+8240 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+8253 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+9532 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+9588 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+9592 INFO: SetuptoolsInfo: initializing cached setuptools info...
+11477 INFO: Processing standard module hook 'hook-websockets.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+12882 INFO: Processing standard module hook 'hook-cryptography.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+14244 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+14879 INFO: Processing standard module hook 'hook-bcrypt.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+15835 INFO: Processing standard module hook 'hook-anyio.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+17265 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+17532 INFO: Processing standard module hook 'hook-pydantic.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+C:\Users\Windows\AppData\Local\Programs\Python\Python314\Lib\site-packages\PyInstaller\utils\hooks\__init__.py:665: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  __import__(name)
+18337 INFO: Processing standard module hook 'hook-rich.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+19148 INFO: Processing standard module hook 'hook-pygments.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+21950 INFO: Processing standard module hook 'hook-zoneinfo.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+22845 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+23919 INFO: Processing standard module hook 'hook-dns.rdata.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+24895 INFO: Processing standard module hook 'hook-pythoncom.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+25038 INFO: Processing standard module hook 'hook-pywintypes.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+27654 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+27967 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+28076 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+28421 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+30064 INFO: Processing standard module hook 'hook-psutil.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+31702 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+32201 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+32418 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+33984 INFO: Processing standard module hook 'hook-lxml.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+34338 INFO: Processing standard module hook 'hook-lxml.etree.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+37004 INFO: Processing standard module hook 'hook-Crypto.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+37620 INFO: Processing standard module hook 'hook-pycparser.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+37819 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+37861 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+37923 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+37925 INFO: Setuptools: 'jaraco' appears to be a partial setuptools-vendored copy - extending search paths to ['C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\jaraco', 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\setuptools\\_vendor\\jaraco']!
+37925 INFO: Processing pre-safe-import-module hook 'hook-jaraco.functools.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+37943 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38241 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38489 INFO: Processing pre-safe-import-module hook 'hook-jaraco.text.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38490 INFO: Setuptools: 'jaraco.text' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco.text'!
+38506 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+38508 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38517 INFO: Processing standard module hook 'hook-importlib_resources.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+38606 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38607 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+38660 INFO: Processing pre-safe-import-module hook 'hook-jaraco.context.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38677 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38678 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+38902 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+38903 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+38932 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+39356 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+39357 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+40083 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+41262 INFO: Analyzing hidden import 'uvicorn.__main__'
+41267 INFO: Analyzing hidden import 'uvicorn.lifespan'
+41267 INFO: Analyzing hidden import 'uvicorn.lifespan.off'
+41274 INFO: Analyzing hidden import 'uvicorn.lifespan.on'
+41286 INFO: Analyzing hidden import 'uvicorn.loops'
+41287 INFO: Analyzing hidden import 'uvicorn.loops.asyncio'
+41293 INFO: Analyzing hidden import 'uvicorn.loops.auto'
+41304 INFO: Analyzing hidden import 'uvicorn.protocols.http.auto'
+41312 INFO: Analyzing hidden import 'uvicorn.protocols.websockets.auto'
+41317 INFO: Analyzing hidden import 'uvicorn.workers'
+41329 INFO: Processing module hooks (post-graph stage)...
+42986 INFO: Processing standard module hook 'hook-lxml.isoschematron.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+43017 WARNING: Hidden import "pycparser.lextab" not found!
+43017 WARNING: Hidden import "pycparser.yacctab" not found!
+43884 WARNING: Hidden import "importlib_resources.trees" not found!
+44381 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks'
+48884 INFO: Processing standard module hook 'hook-lxml.objectify.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+48885 INFO: Processing standard module hook 'hook-tzdata.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+49282 INFO: Performing binary vs. data reclassification (681 entries)
+51630 INFO: Looking for ctypes DLLs
+51707 INFO: Analyzing run-time hooks ...
+51713 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+51725 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+51735 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+51744 INFO: Including run-time hook 'pyi_rth_cryptography_openssl.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+51751 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+51760 INFO: Including run-time hook 'pyi_rth_pythoncom.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+51767 INFO: Including run-time hook 'pyi_rth_pywintypes.py' from 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+51803 INFO: Creating base_library.zip...
+51819 INFO: Looking for dynamic libraries
+C:\Users\Windows\AppData\Local\Programs\Python\Python314\Lib\site-packages\PyInstaller\building\build_main.py:227: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  __import__(package)
+53741 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\numpy.libs']
+53741 INFO: Extra DLL search directories (PATH): []
+55436 INFO: Warnings written to C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\work\localpdf-sidecar\warn-localpdf-sidecar.txt
+55554 INFO: Graph cross-reference written to C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\work\localpdf-sidecar\xref-localpdf-sidecar.html
+55633 INFO: checking PYZ
+55633 INFO: Building PYZ because PYZ-00.toc is non existent
+55633 INFO: Building PYZ (ZlibArchive) C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\work\localpdf-sidecar\PYZ-00.pyz
+56497 INFO: Building PYZ (ZlibArchive) C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\work\localpdf-sidecar\PYZ-00.pyz completed successfully.
+56537 INFO: checking PKG
+56537 INFO: Building PKG because PKG-00.toc is non existent
+56538 INFO: Building PKG (CArchive) localpdf-sidecar.pkg
+60193 INFO: Building PKG (CArchive) localpdf-sidecar.pkg completed successfully.
+60204 INFO: Bootloader C:\Users\Windows\AppData\Local\Programs\Python\Python314\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\run.exe
+60204 INFO: checking EXE
+60204 INFO: Building EXE because EXE-00.toc is non existent
+60205 INFO: Building EXE from EXE-00.toc
+60205 INFO: Copying bootloader EXE to C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\dist\localpdf-sidecar.exe
+60271 INFO: Copying icon to EXE
+60310 INFO: Copying 0 resources to EXE
+60310 INFO: Embedding manifest in EXE
+60342 INFO: Appending PKG archive to EXE
+60415 INFO: Fixing EXE headers
+60737 INFO: Building EXE from EXE-00.toc completed successfully.
+60749 INFO: Build complete! The results are available in: C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\dist

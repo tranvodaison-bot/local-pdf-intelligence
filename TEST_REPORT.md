@@ -15,3 +15,11 @@ Command: `python -m pytest -q -p no:cacheprovider tests/test_foundation.py` with
 - No real user PDF, private data or credentials used in the above tests.
 
 Lần chạy trước có 1 test timeout do gửi yêu cầu trước khi sidecar sẵn sàng; kiểm thử đã được sửa để chờ health và toàn bộ test được chạy lại thành công.
+
+## CTO-002R — 2026-11-13
+
+- Source suite: `python -m pytest -q -p no:cacheprovider tests` — exit 0; **32 passed in 17.14s**, `docs/evidence/CTO-002R-python-tests.log`.
+- Frozen Windows sidecar: `LPI_SIDECAR_EXECUTABLE=<binary> python -m pytest -q -p no:cacheprovider tests/test_sidecar.py` — exit 0; **4 passed in 11.05s**. One-use grant import, forced crash/restart and reopen used a synthetic PDF.
+- Fixture SHA-256 before import and after restart: `61d41ce9e47168c843bc39d566861e9307fbca4a364c6bfa9dc1d0328e174cf0` / same; see `docs/evidence/CTO-002R-sha256-test.log`.
+- When the source and frozen suites ran concurrently, one source-side shutdown timed out after 10 seconds. Sequential full reruns passed; cause remains open as G25.
+- Native Windows desktop E2E: **NOT_RUN**. No native video/screenshot or G1 acceptance.

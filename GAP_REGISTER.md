@@ -28,3 +28,8 @@
 | G20 | P1 | Provisional dependency inventory omits Python transitive packages and has 420 license-unknown entries; no release SBOM. | Resolve licenses, installed runtime scope and transitive dependencies; security and legal review. |
 | G21 | P1 | Windows Python and frontend CI passed for e1f99af; no native Windows E2E in CI. | Add native E2E and supply-chain checks before gate acceptance. |
 | G22 | P1 | Workspace list returns all entries and has no keyset pagination. | Add documented cursor pagination with API and tests before large-scale use. |
+
+| G23 | P0 | Tauri still does not start, monitor or restart the packaged sidecar, issue grants from a native picker, or display persisted documents. | Implement trusted native controller and native E2E; do not mark G1 accepted. |
+| G24 | P0 | One-use grant protocol has unit/subprocess tests but no native parent, adversarial handle-race review, or full authorization audit. | Security review and capability-bound native tests, including Windows file identity. |
+| G25 | P1 | One shutdown test timed out when source and frozen test suites ran concurrently; sequential reruns passed. | Investigate Windows pipe/process lifecycle under concurrent load before release. |
+| G26 | P1 | Native UI automation could not initialize: Windows sandbox setup helper failed before surface selection. | Restore the UI automation environment and run native E2E after desktop integration. |

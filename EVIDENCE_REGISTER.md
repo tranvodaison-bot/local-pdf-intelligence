@@ -16,3 +16,7 @@
 | 2026-11-13 | `docs/evidence/CTO-002-test-evidence.md` | CTO-002 local tests/build; G1 NOT_ACCEPTED |
 | 2026-11-13 | `docs/evidence/CTO-002-dependency-inventory.json` | Provisional CycloneDX inventory, incomplete licenses/transitives |
 | 2026-11-13 | GitHub Actions run `43393793402`, commit `e1f99af` | Windows Python/frontend checks passed; native E2E absent |
+| 2026-11-13 | `docs/evidence/CTO-002R-python-tests.log` | 32 source tests passed sequentially; one earlier concurrent shutdown timeout remains open |
+| 2026-11-13 | `docs/evidence/CTO-002R-binary-tests.log` and `CTO-002R-sha256-test.log` | 4 frozen-sidecar subprocess tests; synthetic PDF hash equal after restart |
+| 2026-11-13 | `docs/evidence/CTO-002R-script-build.log` | Windows sidecar binary build only, not native desktop integration |
+| 2026-11-13 | Code commit `23200f0` | Capability API and frozen sidecar prototype; no native desktop integration |

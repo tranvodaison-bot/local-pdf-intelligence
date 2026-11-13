@@ -1,0 +1,24 @@
+127 INFO: PyInstaller: 6.19.0, contrib hooks: 2026.2
+127 INFO: Python: 3.14.2
+150 INFO: Platform: Windows-10-10.0.19045-SP0
+150 INFO: Python environment: C:\Users\Windows\AppData\Local\Programs\Python\Python314
+150 INFO: wrote C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\localpdf-sidecar.spec
+520 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\python314.zip',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\DLLs',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source\\scripts',
+ 'C:\\Users\\Windows\\.codex\\visualizations\\2026\\11\\13\\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\\sidecar-build\\source']
+921 INFO: Appending 'datas' from .spec
+921 INFO: checking Analysis
+1024 INFO: checking PYZ
+1099 INFO: checking PKG
+1128 INFO: Bootloader C:\Users\Windows\AppData\Local\Programs\Python\Python314\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\run.exe
+1128 INFO: checking EXE
+1145 INFO: Build complete! The results are available in: C:\Users\Windows\.codex\visualizations\2026\11\13\01a1d3b9-57cc-7663-bfb7-2ce49f3b588b\sidecar-build\dist
